@@ -36,14 +36,15 @@ app.post('/place', (request, response) => {
 // Get all of the places
 app.get('/places', (request, response) => {
     // TODO
-    response.send('<h1>Welcome to project2 service.</h1>');
+    response.json(places);
 });
 
 // Add a review to a given place
 app.post('/review/:placeName', (request, response) => {
     // TODO
     let name = request.params.placeName;
-    let rewiew = request.body.review;
+    let username = request.body.username;
+    let review = request.body.review;
     response.send(`The review for ${name} was added successfully.`);
 });
 
