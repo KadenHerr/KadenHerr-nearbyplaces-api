@@ -5,7 +5,7 @@
 // dependencies
 const express = require('express');
 const cors = require('cors');
-//const db = require('./db');
+const db = require('./db');
 
 // create the server
 const app = express();
@@ -29,8 +29,10 @@ app.post('/place', (request, response) => {
     // TODO
     let name = request.body.name;
     let address = request.body.address;
-    let place = {name: name, address: address};
-    response.send(`${name} was added successfully.`);
+    let info = request.body.info;
+    db.addPlace(name,address,info)
+    .then(() => response.send(`The place ${name} was added successfully.`))
+    .catch(e => response.status(500).send("There was an error in saving the palce"));
 });
 
 // Get all of the places
