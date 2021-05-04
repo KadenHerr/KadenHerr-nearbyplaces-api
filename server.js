@@ -26,7 +26,6 @@ app.get('/', (request, response) => {
 
 // Add a place
 app.post('/place', (request, response) => {
-    // TODO
     let name = request.body.name;
     let address = request.body.address;
     let info = request.body.info;
@@ -37,17 +36,20 @@ app.post('/place', (request, response) => {
 
 // Get all of the places
 app.get('/places', (request, response) => {
-    // TODO
-    response.json(places);
+    db.getPlaces()
+    .then(places =>response.json(places))
+    .catch(e => {console.log(e); response.status(500).send("There was an error in finding the places")});
 });
 
 // Add a review to a given place
 app.post('/review/:placeName', (request, response) => {
     // TODO
-    let name = request.params.placeName;
+    let placeName = request.params.placeName;
     let username = request.body.username;
-    let review = request.body.review;
-    response.send(`The review for ${name} was added successfully.`);
+    let comment = request.body.comment;
+    db.addReview(username,comment,placeName)
+    .then(() => response.send(`The review by ${username} for ${placeName} was added successfully.`))
+    .catch(e => response.status(500).send("There was an error in adding the review."));
 });
 
 // A get method that searches for all of the places that match
@@ -58,6 +60,17 @@ app.get('/search/:placeName/:location', (request, response) => {
     let location = request.params.location;
     response.send('<h1>Welcome to project2 service.</h1>');
 });
+
+
+
+
+app.get('/search', (request, response) => {
+    db.searchPlaces()
+    .then(places =>response.json(places))
+    .catch(e => {console.log(e); response.status(500).send("There was an error in finding the palces")});
+});
+
+
 
 // start the server
 app.listen(port, () => console.log('Listening on port ' + port));
