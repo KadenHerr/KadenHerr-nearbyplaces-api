@@ -43,22 +43,22 @@ app.get('/places', (request, response) => {
 
 // Add a review to a given place
 app.post('/review/:placeName', (request, response) => {
-    // TODO
     let placeName = request.params.placeName;
     let username = request.body.username;
     let comment = request.body.comment;
     db.addReview(username,comment,placeName)
     .then(() => response.send(`The review by ${username} for ${placeName} was added successfully.`))
-    .catch(e => response.status(500).send("There was an error in adding the review."));
+    .catch(e => {console.log(e); response.status(500).send("There was an error in adding the review.")});
 });
 
 // A get method that searches for all of the places that match
 // either the place name or address.
-app.get('/search/:placeName/:location', (request, response) => {
-    // TODO
-    let name = request.params.placeName;
-    let location = request.params.location;
-    response.send('<h1>Welcome to project2 service.</h1>');
+app.get('/search/:placeName?/:location?', (request, response) => {
+    let name = request.query.placeName;
+    let address = request.query.location;
+    db.searchPlaces(name,address)
+    .then(places => response.json(places))
+    .catch(e => {console.log(e); response.status(500).send("There was an error when searching for the place.")});
 });
 
 
