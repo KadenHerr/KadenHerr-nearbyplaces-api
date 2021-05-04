@@ -62,15 +62,5 @@ app.get('/search/:placeName/:location', (request, response) => {
 });
 
 
-
-
-app.get('/search', (request, response) => {
-    db.searchPlaces()
-    .then(places =>response.json(places))
-    .catch(e => {console.log(e); response.status(500).send("There was an error in finding the palces")});
-});
-
-
-
 // start the server
 app.listen(port, () => console.log('Listening on port ' + port));

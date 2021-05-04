@@ -29,7 +29,10 @@ let addPlace = (name, address, info) => {
 
 // Get all of the places from the Database
 let getPlaces = () => {
-    let sql = `select * from mynearbyplaces.place`;
+    let sql = `select p.name, p.address, p.info,
+    json_agg(json_build_object('username', r.username, 'comment', r.comment)) as reviews
+    from mynearbyplaces.place p left join mynearbyplaces.review r on p.name = r.placename
+    group by p.name, p.address, p.info`;
     return pool.query(sql)
     .then(result => result.rows);
 }
@@ -42,9 +45,11 @@ let addReview = (username, comment, placename) => {
 }
 
 let searchPlaces = (name,location) => {
+    // TODO
     let sql = `select p.name, p.address, p.info,
-    json_agg(json_build_object('username', r.username, 'comment', r.comment,)) as reviews
-    from mynearbyplaces.places p left join mynearbyplaces.review r on p.name = r.placename`;
+    json_agg(json_build_object('username', r.username, 'comment', r.comment)) as reviews
+    from mynearbyplaces.place p left join mynearbyplaces.review r on p.name = r.placename
+    group by p.name, p.address, p.info`;
     return pool.query(sql)
     .then(result => result.rows);
 }
