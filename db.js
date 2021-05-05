@@ -40,8 +40,7 @@ let getPlaces = () => {
 // Add a review to the Database
 let addReview = (username, comment, placename) => {
     return pool.query('insert into mynearbyplaces.review (username, comment, placename) values ($1,$2,$3)',[username, comment, placename])
-    .then(() => console.log(`The review by ${username} was added to the Data Base.`))
-    .catch(e => console.log(e));
+    .then(() => console.log(`The review by ${username} was added to the Data Base.`));
 }
 
 let searchPlaces = (name,address) => {
