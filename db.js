@@ -44,8 +44,6 @@ let addReview = (username, comment, placename) => {
 }
 
 let searchPlaces = (name,address) => {
-    // TODO
-    console.log("\nname: " + name +"  address: "+ address + "\n");
     let sql = `select p.name, p.address, p.info,
     json_agg(json_build_object('username', r.username, 'comment', r.comment)) as reviews
     from mynearbyplaces.place p left join mynearbyplaces.review r on p.name = r.placename
